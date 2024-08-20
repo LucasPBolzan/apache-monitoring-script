@@ -96,7 +96,7 @@
 4. **Criar um Script de Validação**:
     - Crie um script para verificar se o serviço Apache está online e salve-o no NFS.
    ```bash
-   sudo vi /mnt/compartilhar/lucas/check_apache.sh
+   sudo nano check_apache.sh
    ```
    - Adicione o seguinte conteúdo ao script:
    ```bash
@@ -110,4 +110,20 @@
         echo "$date_time - $service - OFFLINE" >> /mnt/compartilhar/seu_nome/offline_status.log
     fi
 
+   ```
+    - Torne o script executável.
+   ```bash
+   sudo chmod +x /mnt/compartilhar/lucas/check_apache.sh
+
+   ```
+
+5. **Automatizar a Execução do Script**:
+    - Configure o cron para rodar o script a cada 5 minutos.
+   ```bash
+   sudo crontab -e
+   ```
+
+   - Adicione a seguinte linha ao cron:
+   ```bash
+   */5 * * * * /mnt/compartilhar/lucas/check_apache.sh
    ```
