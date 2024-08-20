@@ -56,9 +56,13 @@
    - Instale o servidor NFS para compartilhamento de arquivos.
    ```bash
    sudo yum install nfs-utils -y
-
-Edite o arquivo `/etc/exports`, adicione a linha de configuração para compartilhar o diretório desejado e reinicie o serviço NFS:
+   ```
+   - Edite o arquivo `/etc/exports`, adicione a linha de configuração para compartilhar o diretório desejado e reinicie o serviço NFS:
 
 ```bash
 sudo vi /etc/exports
+
+   
+
+
 
