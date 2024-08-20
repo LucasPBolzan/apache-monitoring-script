@@ -50,6 +50,11 @@
    - Alinhe um Elastic IP à instância EC2 para fornecer um endereço IP estático, facilitando o acesso público.
 
 
+## Configuração no Linux
 
+1. **Configurar NFS**:
+   - Instale o servidor NFS para compartilhamento de arquivos.
+   ```bash
+   sudo yum install nfs-utils -y
 
 
