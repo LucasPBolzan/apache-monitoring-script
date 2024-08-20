@@ -92,3 +92,22 @@
    ```bash
    sudo systemctl status httpd
    ```
+   
+4. **Criar um Script de Validação**:
+    - Crie um script para verificar se o serviço Apache está online e salve-o no NFS.
+   ```bash
+   sudo vi /mnt/compartilhar/lucas/check_apache.sh
+   ```
+   - Adicione o seguinte conteúdo ao script:
+   ```bash
+   #!/bin/bash
+    service="httpd"
+    date_time=$(date '+%Y-%m-%d %H:%M:%S')
+    status=$(systemctl is-active $service)
+    if [ "$status" = "active" ]; then
+    echo "$date_time - $service - ONLINE" >> /mnt/compartilhar/seu_nome/online_status.log
+    else
+    echo "$date_time - $service - OFFLINE" >> /mnt/compartilhar/seu_nome/offline_status.log
+    fi
+
+   ```
