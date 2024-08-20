@@ -105,9 +105,9 @@
     date_time=$(date '+%Y-%m-%d %H:%M:%S')
     status=$(systemctl is-active $service)
     if [ "$status" = "active" ]; then
-    echo "$date_time - $service - ONLINE" >> /mnt/compartilhar/seu_nome/online_status.log
+        echo "$date_time - $service - ONLINE" >> /mnt/compartilhar/seu_nome/online_status.log
     else
-    echo "$date_time - $service - OFFLINE" >> /mnt/compartilhar/seu_nome/offline_status.log
+        echo "$date_time - $service - OFFLINE" >> /mnt/compartilhar/seu_nome/offline_status.log
     fi
 
    ```
