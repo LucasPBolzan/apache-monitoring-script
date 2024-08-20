@@ -41,7 +41,6 @@
 3. **Criar VPC:**
    - No console da AWS, vá para **VPC** > **Criar VPC**.
    - Escolha o nome da VPC, um bloco CIDR (por exemplo, `10.0.0.0/16`), e configure as outras opções conforme necessário.
-   - Associe a VPC à instância criada anteriormente.
 
 4. **Criar Sub-rede:**
    - No console da AWS, vá para **VPC** > **Sub-redes** > **Criar Sub-rede**.
