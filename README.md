@@ -1,4 +1,4 @@
-# Parte Prática
+# PROJETO LINUX
 
 ## Requisitos AWS:
 
@@ -25,8 +25,31 @@
   - Mensagem personalizada de "ONLINE" ou "OFFLINE"
 - O script deve gerar 2 arquivos de saída: 1 para o serviço online e 1 para o serviço OFFLINE.
 - Preparar a execução automatizada do script a cada 5 minutos.
-- Fazer o versionamento da atividade.
-- Fazer a documentação explicando o processo de instalação do Linux.
+
+## Configuração na AWS
+
+1. **Criar VPC**:
+   - Crie uma VPC (Virtual Private Cloud) para isolar sua rede virtual na AWS.
+   
+2. **Criar Subnet**:
+   - Dentro da VPC, crie uma Subnet para definir um bloco de endereços IP e hospedar os recursos.
+   
+3. **Criar Gateway**:
+   - Configure um Internet Gateway para permitir que os recursos na VPC se comuniquem com a internet.
+   
+4. **Criar Tabela de Rotas**:
+   - Defina uma Tabela de Rotas para controlar o tráfego de rede dentro da VPC, direcionando o tráfego para o Gateway.
+   
+5. **Criar a Instância**:
+   - Lance uma instância EC2 dentro da Subnet criada para executar seus aplicativos ou serviços.
+   
+6. **Criar o Security Group**:
+   - Crie um Security Group para definir regras de firewall, controlando o tráfego de entrada e saída da instância EC2.
+   
+7. **Criar o Elastic IP**:
+   - Alinhe um Elastic IP à instância EC2 para fornecer um endereço IP estático, facilitando o acesso público.
+
+
 
 
 
