@@ -28,26 +28,47 @@
 
 ## Configuração na AWS
 
-1. **Criar VPC**:
-   - Crie uma VPC (Virtual Private Cloud) para isolar sua rede virtual na AWS.
+1. **Gerar Chave Pública de Acesso ao Ambiente:**
+   - No console da AWS, vá para **EC2** > **Chaves de Acesso** > **Criar Par de Chaves**.
+   - Escolha o tipo de chave (RSA ou ED25519) e forneça um nome. Baixe a chave privada (`.pem`) ou (`.ppk`) se for utilizar o Putty.
+
+2. **Criar 1 Instância EC2 com o Sistema Operacional Amazon Linux 2 (Família t3.small, 16 GB SSD):**
+   - No console da AWS, vá para **EC2** > **Instâncias** > **Lançar Instância**.
+   - Escolha **Amazon Linux 2** como o sistema operacional.
+   - Na seção de tipo de instância, selecione a família `t3.small`.
+   - Configure o armazenamento com 16 GB SSD.
+
+3. **Criar VPC:**
+   - No console da AWS, vá para **VPC** > **Criar VPC**.
+   - Escolha o nome da VPC, um bloco CIDR (por exemplo, `10.0.0.0/16`), e configure as outras opções conforme necessário.
+   - Associe a VPC à instância criada anteriormente.
+
+4. **Criar Sub-rede:**
+   - No console da AWS, vá para **VPC** > **Sub-redes** > **Criar Sub-rede**.
+   - Escolha a VPC criada anteriormente, defina o bloco CIDR (por exemplo, `10.0.1.0/24`), e selecione uma zona de disponibilidade.
+   - Nomeie a sub-rede e conclua a criação.
+
+5. **Criar Gateway da Internet:**
+   - No console da AWS, vá para **VPC** > **Gateways da Internet** > **Criar Gateway da Internet**.
+   - Nomeie o gateway, crie e anexe-o à VPC criada anteriormente.
    
-2. **Criar Subnet**:
-   - Dentro da VPC, crie uma Subnet para definir um bloco de endereços IP e hospedar os recursos.
-   
-3. **Criar Gateway**:
-   - Configure um Internet Gateway para permitir que os recursos na VPC se comuniquem com a internet.
-   
-4. **Criar Tabela de Rotas**:
-   - Defina uma Tabela de Rotas para controlar o tráfego de rede dentro da VPC, direcionando o tráfego para o Gateway.
-   
-5. **Criar a Instância**:
-   - Lance uma instância EC2 dentro da Subnet criada para executar seus aplicativos ou serviços.
-   
-6. **Criar o Security Group**:
-   - Crie um Security Group para definir regras de firewall, controlando o tráfego de entrada e saída da instância EC2.
-   
-7. **Criar o Elastic IP**:
-   - Alinhe um Elastic IP à instância EC2 para fornecer um endereço IP estático, facilitando o acesso público.
+6. **Criar Tabela de Rotas:**
+   - No console da AWS, vá para **VPC** > **Tabelas de Rotas** > **Criar Tabela de Rotas**.
+   - Nomeie a tabela de rotas, associe-a à VPC, e adicione uma rota padrão (0.0.0.0/0) apontando para o Gateway da Internet criado anteriormente.
+
+7. **Gerar Elastic IP:**
+   - No console da AWS, vá para **EC2** > **Elastic IPs** > **Alocar Novo Endereço Elastic IP**.
+   - Associe o Elastic IP à instância EC2 que você criou anteriormente.
+
+8. **Liberar as Portas de Comunicação para Acesso Público:**
+   - No console da AWS, vá para **EC2** > **Grupos de Segurança** > selecione o grupo associado à instância > **Editar Regras de Entrada**.
+   - Adicione regras para as portas necessárias:
+     - `22/TCP` para SSH
+     - `111/TCP e UDP` para RPCBind
+     - `2049/TCP e UDP` para NFS
+     - `80/TCP` para HTTP
+     - `443/TCP` para HTTPS
+
 
 
 ## Configuração no Linux
@@ -59,7 +80,7 @@
    ```
    - Edite o arquivo `/etc/exports`, adicione a linha de configuração para compartilhar o diretório desejado e reinicie o serviço NFS:
    ```bash
-      sudo vi /etc/exports
+      sudo nano /etc/exports
    ```
    - Adicione a linha:
     ```bash
@@ -85,18 +106,15 @@
    - Inicie o serviço Apache.
    ```bash
    sudo systemctl start httpd
-    sudo systemctl enable httpd
+   sudo systemctl enable httpd
    ```
 
-   - Verifique se o Apache está rodando.
-   ```bash
-   sudo systemctl status httpd
-   ```
+  
    
 4. **Criar um Script de Validação**:
     - Crie um script para verificar se o serviço Apache está online e salve-o no NFS.
    ```bash
-   sudo nano check_apache.sh
+   sudo nano /usr/local/bin/check_apache.sh
    ```
    - Adicione o seguinte conteúdo ao script:
    ```bash
@@ -113,7 +131,7 @@
    ```
     - Torne o script executável.
    ```bash
-   sudo chmod +x /mnt/compartilhar/lucas/check_apache.sh
+   sudo chmod +x /usr/local/bin/check_apache.sh
 
    ```
 
@@ -125,5 +143,5 @@
 
    - Adicione a seguinte linha ao cron:
    ```bash
-   */5 * * * * /mnt/compartilhar/lucas/check_apache.sh
+   */5 * * * * /usr/local/bin/check_apache.sh
    ```
