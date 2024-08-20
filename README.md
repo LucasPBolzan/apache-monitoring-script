@@ -58,11 +58,37 @@
    sudo yum install nfs-utils -y
    ```
    - Edite o arquivo `/etc/exports`, adicione a linha de configuração para compartilhar o diretório desejado e reinicie o serviço NFS:
-
-```bash
-sudo vi /etc/exports
-
+   ```bash
+      sudo vi /etc/exports
+   ```
+   - Adicione a linha:
+    ```bash
+      /mnt/compartilhar *(rw,sync,no_root_squash)
+   ```
+   - Salve e feche o arquivo, depois reinicie o serviço NFS:
+   ```bash
+      sudo systemctl restart nfs-server
+      sudo systemctl enable nfs-server
+   ```
+2. **Criar um Diretório no Filesystem do NFS:**
+    - Crie um diretório dentro do filesystem do NFS com o seu nome.
+   ```bash
+   sudo mkdir /mnt/compartilhar/lucas
+   ```
    
+3. **Subir um Apache no servidor**:
+    - Instale o servidor Apache.
+   ```bash
+   sudo yum install httpd -y
+   ```
 
+   - Inicie o serviço Apache.
+   ```bash
+   sudo systemctl start httpd
+    sudo systemctl enable httpd
+   ```
 
-
+   - Verifique se o Apache está rodando.
+   ```bash
+   sudo systemctl status httpd
+   ```
